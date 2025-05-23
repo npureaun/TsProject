@@ -67,7 +67,7 @@ class GameManager(
 
     fun increaseAtk() {
         // ATK 증가 로직
-        val atkBoost = (userData.playerATK * (15) / 100.0).toLong()
+        val atkBoost = (userData.playerATK * (15+userData.lvCnt) / 100.0).toLong()
         userData.playerATK+= atkBoost
     }
 
@@ -86,7 +86,7 @@ class GameManager(
         if (isCritical) {
             damage *= 2
             uiCallbacks.soundManager.playSoundCritical(true)
-            uiCallbacks.showDamageTextAnimation("CRT!!! $damage",DamageType.USER_CRITICAL)
+            uiCallbacks.showDamageTextAnimation("$damage",DamageType.USER_CRITICAL)
         } else {
             uiCallbacks.soundManager.playSoundAttack(true)
             uiCallbacks.showDamageTextAnimation(damage.toString(),DamageType.USER)
@@ -111,7 +111,7 @@ class GameManager(
         val level = ++userData.lvCnt
 
         // 컴퓨터 HP 기본값 (0.15 지수 기울기 적용)
-        val expFactor = 0.005 + (level / 1000.0)  // 레벨이 올라갈수록 살짝 증가
+        val expFactor = 0.01 + (level / 1000.0)  // 레벨이 올라갈수록 살짝 증가
         val baseComHP = (comData.originHP * (80..100).random() / 100.0) * kotlin.math.exp(level * expFactor)
 
 
@@ -132,6 +132,9 @@ class GameManager(
 
         if (level % 5 == 0L && userData.criticalRate < 100) {
             userData.criticalRate += 5
+        }
+        if(level>=30&&(level % 3 == 0L||level%10==0L)){
+            atkBoost*=level
         }
 
         userData.playerHP += hpBoost.toLong()
@@ -157,7 +160,7 @@ class GameManager(
         if (isCritical) {
             damage *= 2
             uiCallbacks.soundManager.playSoundCritical(false)
-            uiCallbacks.showDamageTextAnimation("CRT!!! $damage", DamageType.COM_CRITICAL)
+            uiCallbacks.showDamageTextAnimation("$damage", DamageType.COM_CRITICAL)
         } else {
             uiCallbacks.soundManager.playSoundAttack(false)
             uiCallbacks.showDamageTextAnimation("$damage", DamageType.COM)

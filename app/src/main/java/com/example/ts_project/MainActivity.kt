@@ -118,12 +118,12 @@ class MainActivity : AppCompatActivity() {
             this.text = text
             if(damageType==DamageType.USER_CRITICAL){
                 setTextColor(Color.MAGENTA)
-                textSize=70f
+                textSize=60f
             }else if(damageType==DamageType.USER){
                 setTextColor(Color.CYAN)
             }else if(damageType==DamageType.COM_CRITICAL){
                 setTextColor(Color.YELLOW)
-                textSize=70f
+                textSize=60f
             }else setTextColor(Color.RED)
             typeface = Typeface.DEFAULT_BOLD
             alpha = 1f
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showUpgradeSelectionDialog() {
         GameStatus.isDialog=true
-        val upgrades = arrayOf("HP HEAL", "ATK +15%", "CRITICAL +5%")
+        val upgrades = arrayOf("HP HEAL", "ATK +(15+LV)%", "CRITICAL +5%")
 
         AlertDialog.Builder(this)
             .setTitle("강화 요소를 선택하세요")
